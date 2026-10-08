@@ -1,0 +1,322 @@
+<!-- Generated file — do not edit; regenerated with the SDK. -->
+
+# Subscriptions — operations
+
+Accessor: `client.subscriptions` · Source: `paypal_sdk/apis/subscriptions.py` · 17 operations
+
+Each `###` block is one operation and assumes `sdk-map.md` is loaded: blocks omit what its invariants table covers and are otherwise self-contained, so chunk at block level. Signatures are the sync parsed spelling; the async and raw spellings take the same parameters (see sdk-map.md). **Type sources** names the module declaring each type an operation mentions, so resolving a body, return or error payload is a lookup rather than a search; the runtime types `RawError` and `ApiResult` are excluded.
+
+### client.subscriptions.activate_billing_plan
+
+- **Route**: `POST /v1/billing/plans/{id}/activate`
+- **Auth**: `oauth2`
+- **Signature**: `def activate_billing_plan(id_: str, *, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id`
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, ActivateBillingPlanErrorBody]`
+- **Error**: `ActivateBillingPlanErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `ActivateBillingPlanErrorBody` | `paypal_sdk/errors/activate_billing_plan_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.activate_subscription
+
+- **Route**: `POST /v1/billing/subscriptions/{id}/activate`
+- **Auth**: `oauth2`
+- **Signature**: `def activate_subscription(id_: str, *, body: ActivateSubscriptionRequest | ActivateSubscriptionRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, ActivateSubscriptionErrorBody]`
+- **Error**: `ActivateSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `ActivateSubscriptionRequest` | `paypal_sdk/models/activate_subscription_request.py` |
+| `ActivateSubscriptionRequestDict` | `paypal_sdk/models/activate_subscription_request.py` |
+| `ActivateSubscriptionErrorBody` | `paypal_sdk/errors/activate_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.cancel_subscription
+
+- **Route**: `POST /v1/billing/subscriptions/{id}/cancel`
+- **Auth**: `oauth2`
+- **Signature**: `def cancel_subscription(id_: str, *, body: CancelSubscriptionRequest | CancelSubscriptionRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, CancelSubscriptionErrorBody]`
+- **Error**: `CancelSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `CancelSubscriptionRequest` | `paypal_sdk/models/cancel_subscription_request.py` |
+| `CancelSubscriptionRequestDict` | `paypal_sdk/models/cancel_subscription_request.py` |
+| `CancelSubscriptionErrorBody` | `paypal_sdk/errors/cancel_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.capture_subscription
+
+- **Route**: `POST /v1/billing/subscriptions/{id}/capture`
+- **Auth**: `oauth2`
+- **Signature**: `def capture_subscription(id_: str, *, pay_pal_request_id: str | None = None, body: CaptureSubscriptionRequest | CaptureSubscriptionRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `pay_pal_request_id` — header `PayPal-Request-Id` · `body` — JSON body
+- **Returns (parsed)**: `SubscriptionTransactionDetails`
+- **Returns (raw)**: `ApiResult[SubscriptionTransactionDetails, CaptureSubscriptionErrorBody]`
+- **Error**: `CaptureSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `CaptureSubscriptionRequest` | `paypal_sdk/models/capture_subscription_request.py` |
+| `CaptureSubscriptionRequestDict` | `paypal_sdk/models/capture_subscription_request.py` |
+| `SubscriptionTransactionDetails` | `paypal_sdk/models/subscription_transaction_details.py` |
+| `CaptureSubscriptionErrorBody` | `paypal_sdk/errors/capture_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.create_billing_plan
+
+- **Route**: `POST /v1/billing/plans`
+- **Auth**: `oauth2`
+- **Signature**: `def create_billing_plan(*, prefer: str | None = "return=minimal", pay_pal_request_id: str | None = None, body: PlanRequest | PlanRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+- **Params**: `prefer` — header `Prefer` · `pay_pal_request_id` — header `PayPal-Request-Id` · `body` — JSON body
+- **Returns (parsed)**: `BillingPlan`
+- **Returns (raw)**: `ApiResult[BillingPlan, CreateBillingPlanErrorBody]`
+- **Error**: `CreateBillingPlanErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `PlanRequest` | `paypal_sdk/models/plan_request.py` |
+| `PlanRequestDict` | `paypal_sdk/models/plan_request.py` |
+| `BillingPlan` | `paypal_sdk/models/billing_plan.py` |
+| `CreateBillingPlanErrorBody` | `paypal_sdk/errors/create_billing_plan_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.create_subscription
+
+- **Route**: `POST /v1/billing/subscriptions`
+- **Auth**: `oauth2`
+- **Signature**: `def create_subscription(*, prefer: str | None = "return=minimal", pay_pal_request_id: str | None = None, pay_pal_client_metadata_id: str | None = None, body: CreateSubscriptionRequest | CreateSubscriptionRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+- **Params**: `prefer` — header `Prefer` · `pay_pal_request_id` — header `PayPal-Request-Id` · `pay_pal_client_metadata_id` — header `PayPal-Client-Metadata-Id` · `body` — JSON body
+- **Returns (parsed)**: `Subscription`
+- **Returns (raw)**: `ApiResult[Subscription, CreateSubscriptionErrorBody]`
+- **Error**: `CreateSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `CreateSubscriptionRequest` | `paypal_sdk/models/create_subscription_request.py` |
+| `CreateSubscriptionRequestDict` | `paypal_sdk/models/create_subscription_request.py` |
+| `Subscription` | `paypal_sdk/models/subscription.py` |
+| `CreateSubscriptionErrorBody` | `paypal_sdk/errors/create_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.deactivate_billing_plan
+
+- **Route**: `POST /v1/billing/plans/{id}/deactivate`
+- **Auth**: `oauth2`
+- **Signature**: `def deactivate_billing_plan(id_: str, *, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id`
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, DeactivateBillingPlanErrorBody]`
+- **Error**: `DeactivateBillingPlanErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `DeactivateBillingPlanErrorBody` | `paypal_sdk/errors/deactivate_billing_plan_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.get_billing_plan
+
+- **Route**: `GET /v1/billing/plans/{id}`
+- **Auth**: `oauth2`
+- **Signature**: `def get_billing_plan(id_: str, *, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id`
+- **Returns (parsed)**: `BillingPlan`
+- **Returns (raw)**: `ApiResult[BillingPlan, GetBillingPlanErrorBody]`
+- **Error**: `GetBillingPlanErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [401, 403, 404, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `BillingPlan` | `paypal_sdk/models/billing_plan.py` |
+| `GetBillingPlanErrorBody` | `paypal_sdk/errors/get_billing_plan_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.get_subscription
+
+- **Route**: `GET /v1/billing/subscriptions/{id}`
+- **Auth**: `oauth2`
+- **Signature**: `def get_subscription(id_: str, *, fields: str | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `fields` — query
+- **Returns (parsed)**: `Subscription`
+- **Returns (raw)**: `ApiResult[Subscription, GetSubscriptionErrorBody]`
+- **Error**: `GetSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [401, 403, 404, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `Subscription` | `paypal_sdk/models/subscription.py` |
+| `GetSubscriptionErrorBody` | `paypal_sdk/errors/get_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.list_billing_plans
+
+- **Route**: `GET /v1/billing/plans`
+- **Auth**: `oauth2`
+- **Signature**: `def list_billing_plans(*, product_id: str | None = None, page_size: int | None = 10, page: int | None = 1, total_required: bool | None = False, prefer: str | None = "return=minimal", request_options: RequestOptionsOrDict | None = None)`
+- **Params**: `product_id` — query · `page_size` — query · `page` — query · `total_required` — query · `prefer` — header `Prefer`
+- **Returns (parsed)**: `PlanCollection`
+- **Returns (raw)**: `ApiResult[PlanCollection, ListBillingPlansErrorBody]`
+- **Error**: `ListBillingPlansErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `PlanCollection` | `paypal_sdk/models/plan_collection.py` |
+| `ListBillingPlansErrorBody` | `paypal_sdk/errors/list_billing_plans_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.list_subscription_transactions
+
+- **Route**: `GET /v1/billing/subscriptions/{id}/transactions`
+- **Auth**: `oauth2`
+- **Signature**: `def list_subscription_transactions(id_: str, start_time: str, end_time: str, *, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`, `start_time`, `end_time`
+- **Params**: `id_` — path `id` · `start_time` — query · `end_time` — query
+- **Returns (parsed)**: `TransactionsList`
+- **Returns (raw)**: `ApiResult[TransactionsList, ListSubscriptionTransactionsErrorBody]`
+- **Error**: `ListSubscriptionTransactionsErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `TransactionsList` | `paypal_sdk/models/transactions_list.py` |
+| `ListSubscriptionTransactionsErrorBody` | `paypal_sdk/errors/list_subscription_transactions_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.list_subscriptions
+
+- **Route**: `GET /v1/billing/subscriptions`
+- **Auth**: `oauth2`
+- **Signature**: `def list_subscriptions(*, plan_ids: str | None = None, statuses: str | None = None, created_after: str | None = None, created_before: str | None = None, status_updated_before: str | None = None, status_updated_after: str | None = None, filter_: str | None = None, page_size: int | None = 10, page: int | None = 1, customer_ids: list[str] | None = None, request_options: RequestOptionsOrDict | None = None)`
+- **Params**: `plan_ids` — query · `statuses` — query · `created_after` — query · `created_before` — query · `status_updated_before` — query · `status_updated_after` — query · `filter_` — query `filter` · `page_size` — query · `page` — query · `customer_ids` — query
+- **Returns (parsed)**: `SubscriptionCollection`
+- **Returns (raw)**: `ApiResult[SubscriptionCollection, ListSubscriptionsErrorBody]`
+- **Error**: `ListSubscriptionsErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `SubscriptionCollection` | `paypal_sdk/models/subscription_collection.py` |
+| `ListSubscriptionsErrorBody` | `paypal_sdk/errors/list_subscriptions_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.patch_billing_plan
+
+- **Route**: `PATCH /v1/billing/plans/{id}`
+- **Auth**: `oauth2`
+- **Signature**: `def patch_billing_plan(id_: str, *, body: list[Patch | PatchDict] | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, PatchBillingPlanErrorBody]`
+- **Error**: `PatchBillingPlanErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `Patch` | `paypal_sdk/models/patch.py` |
+| `PatchDict` | `paypal_sdk/models/patch.py` |
+| `PatchBillingPlanErrorBody` | `paypal_sdk/errors/patch_billing_plan_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.patch_subscription
+
+- **Route**: `PATCH /v1/billing/subscriptions/{id}`
+- **Auth**: `oauth2`
+- **Signature**: `def patch_subscription(id_: str, *, body: list[Patch | PatchDict] | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, PatchSubscriptionErrorBody]`
+- **Error**: `PatchSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `Patch` | `paypal_sdk/models/patch.py` |
+| `PatchDict` | `paypal_sdk/models/patch.py` |
+| `PatchSubscriptionErrorBody` | `paypal_sdk/errors/patch_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.revise_subscription
+
+- **Route**: `POST /v1/billing/subscriptions/{id}/revise`
+- **Auth**: `oauth2`
+- **Signature**: `def revise_subscription(id_: str, *, body: ModifySubscriptionRequest | ModifySubscriptionRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `ModifySubscriptionResponse`
+- **Returns (raw)**: `ApiResult[ModifySubscriptionResponse, ReviseSubscriptionErrorBody]`
+- **Error**: `ReviseSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `ModifySubscriptionRequest` | `paypal_sdk/models/modify_subscription_request.py` |
+| `ModifySubscriptionRequestDict` | `paypal_sdk/models/modify_subscription_request.py` |
+| `ModifySubscriptionResponse` | `paypal_sdk/models/modify_subscription_response.py` |
+| `ReviseSubscriptionErrorBody` | `paypal_sdk/errors/revise_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.suspend_subscription
+
+- **Route**: `POST /v1/billing/subscriptions/{id}/suspend`
+- **Auth**: `oauth2`
+- **Signature**: `def suspend_subscription(id_: str, *, body: SuspendSubscription | SuspendSubscriptionDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, SuspendSubscriptionErrorBody]`
+- **Error**: `SuspendSubscriptionErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `SuspendSubscription` | `paypal_sdk/models/suspend_subscription.py` |
+| `SuspendSubscriptionDict` | `paypal_sdk/models/suspend_subscription.py` |
+| `SuspendSubscriptionErrorBody` | `paypal_sdk/errors/suspend_subscription_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
+### client.subscriptions.update_billing_plan_pricing_schemes
+
+- **Route**: `POST /v1/billing/plans/{id}/update-pricing-schemes`
+- **Auth**: `oauth2`
+- **Signature**: `def update_billing_plan_pricing_schemes(id_: str, *, body: UpdatePricingSchemesRequest | UpdatePricingSchemesRequestDict | None = None, request_options: RequestOptionsOrDict | None = None)`
+  - required, positional: `id_`
+- **Params**: `id_` — path `id` · `body` — JSON body
+- **Returns (parsed)**: `None`
+- **Returns (raw)**: `ApiResult[None, UpdateBillingPlanPricingSchemesErrorBody]`
+- **Error**: `UpdateBillingPlanPricingSchemesErrorBody` — **Case A (typed)**
+- **Error arms**: `SubscriptionError` [400, 401, 403, 404, 422, 500] · `RawError` [anything unmapped]
+
+| Type | Source |
+| --- | --- |
+| `UpdatePricingSchemesRequest` | `paypal_sdk/models/update_pricing_schemes_request.py` |
+| `UpdatePricingSchemesRequestDict` | `paypal_sdk/models/update_pricing_schemes_request.py` |
+| `UpdateBillingPlanPricingSchemesErrorBody` | `paypal_sdk/errors/update_billing_plan_pricing_schemes_error.py` |
+| `SubscriptionError` | `paypal_sdk/models/subscription_error.py` |
+
