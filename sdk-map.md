@@ -71,7 +71,6 @@ Every API group is a property on the client (e.g. `client.orders`). Every constr
 | `base_url` | `str \| None` | `str \| None` | `None` |
 | `timeout` | `float` | `float` | `30.0` seconds |
 | `retry_options` | `int \| RetryOptionsOrDict \| None` | `int \| RetryOptionsOrDict \| None` | `None` |
-| `logging_options` | `LoggingOptionsOrDict \| None` | `LoggingOptionsOrDict \| None` | `None` |
 | `custom_http_client` | `HttpClient \| None` | — | `None` |
 | `custom_async_http_client` | — | `AsyncHttpClient \| None` | `None` |
 | `oauth2` | `ClientCredentialsOrDict \| None` | `ClientCredentialsOrDict \| None` | `None` |
@@ -82,7 +81,6 @@ The types those columns name — where each imports from and, for a credentials 
 | Type | Import from | Shape |
 | --- | --- | --- |
 | `RetryOptionsOrDict` | `paypal_sdk.core` | a retry count, `RetryOptions`, or a dict: `max_retries: int` · `initial_delay: float` · `backoff_factor: float` · `max_delay: float` · `max_jitter: float` · `status_codes_to_retry: frozenset[int]` · `http_methods_to_retry: frozenset[HttpMethod]` |
-| `LoggingOptionsOrDict` | `paypal_sdk.core` | `LoggingOptions` or a dict: `log_request_headers: bool` · `log_response_headers: bool` · `log_request_body: bool` · `body_size_limit: int` · `redaction_placeholder: str` · `unmask_headers: AbstractSet[str]` · `mask_headers: AbstractSet[str]` · `mask_keys: AbstractSet[str]` |
 | `HttpClient` | `paypal_sdk.core` | protocol — `send(request: HttpRequest) -> HttpResponse` · `close()`; `send` returns once the head has arrived and never reads the body, and raises `TransportError` (from `core`) when no response arrives — anything else it raises is never retried |
 | `ClientCredentialsOrDict` | `paypal_sdk.core` | `ClientCredentials` or a dict: `client_id: str` · `client_secret: str` · `scopes: list[Scope] \| None` |
 | `TokenSource` | `paypal_sdk.core` | protocol — `fetch(credentials) -> OAuthToken` |
@@ -109,25 +107,6 @@ The types those columns name — where each imports from and, for a credentials 
 The wait before retry *n* is `initial_delay × backoff_factor^(n−1)` plus up to `max_jitter` of random delay, the sum capped at `max_delay`; a `Retry-After` header replaces it, trimmed to `max_delay`.
 
 A single call overrides two of these through `request_options` (`paypal_sdk/core/request_options.py`): `max_retries` and `status_codes_to_retry`, each merged over the client's policy field by field — `request_options={"max_retries": 0}` turns retrying off for that one call and leaves every other call alone.
-
-### Logging — off by default
-
-Every HTTP exchange is written through the standard `logging` module under the `paypal_sdk` logger, and the SDK configures nothing itself. Set that logger's level to turn it on: INFO writes the request line and a 2xx response line, WARNING a non-2xx response line and each retry, ERROR a call that ends in an exception, and DEBUG the header dumps and the request body that the flags below turn on. Or set `PAYPAL_SDK_LOG=info|debug` before the process starts: it sets the level, turns the three flags on for `debug`, and adds a stderr handler only where nothing listens.
-
-`LoggingOptions` fields (source: `paypal_sdk/core/logging.py`). Pass only the fields you change; each one left out takes its default, and a name set you pass replaces its default:
-
-| Field | Type | Default |
-| --- | --- | --- |
-| `log_request_headers` | `bool` | `False` |
-| `log_response_headers` | `bool` | `False` |
-| `log_request_body` | `bool` | `False` |
-| `body_size_limit` | `int` (bytes) | `32768` |
-| `redaction_placeholder` | `str` | `"REDACTED"` |
-| `unmask_headers` | `AbstractSet[str]` | `frozenset()` |
-| `mask_headers` | `AbstractSet[str]` | `frozenset()` |
-| `mask_keys` | `AbstractSet[str]` | `frozenset({"sig", "signature", "access_token", "apikey", "api_key", "client_secret", "password", "refresh_token", "code", "assertion", "client_assertion"})` |
-
-A single call is quietened through `request_options` (`paypal_sdk/core/request_options.py`): `log_level`, a `logging` level constant, is a floor below which that call's records are not written; it never turns a dump or the body on. A header value prints `REDACTED` unless its name is on the runtime's safe list, a query value unless its key is a paging name, and a form field whose key is in `mask_keys` always; a JSON body prints as sent; a response body is never logged.
 
 ---
 
@@ -181,7 +160,7 @@ Each links to a sub-page with one block per operation, headed by its full access
 | **Four spellings, one signature** — the same method name and parameters on `Client` and `AsyncClient`, each also reachable through `.with_raw_response`; the async twin is a coroutine to `await`, with the same return types and error case, and where the **Async Type** column differs, pass the type it names | Getting a client |
 | **Parsed raises, raw returns** — `ApiError` versus `ApiResult` | Error-handling model |
 | **Case B error is always `RawError`** — also the last arm of every Case A alias, where a block's **Error arms** bullet ends in it | Error-handling model |
-| **A trailing `request_options`** — keyword-only and optional, for per-call overrides such as a timeout, extra headers, `max_retries`, `status_codes_to_retry` or `log_level`; every signature ends with it | here (`paypal_sdk/core/request_options.py`), Retries, Logging |
+| **A trailing `request_options`** — keyword-only and optional, for per-call overrides such as a timeout, extra headers, `max_retries` or `status_codes_to_retry`; every signature ends with it | here (`paypal_sdk/core/request_options.py`), Retries |
 | **Base URL `https://api-m.sandbox.paypal.com`** — this SDK's only server; override it with `base_url="https://…"` | Servers & auth |
 | **Parameter names are literal** — signatures are generated code verbatim, and everything behind the bare `*` must be passed by name | here |
 | **A parameter's wire name is its Python name** — sent as-is on the path, query string, header or body, unless the block's **Params** bullet carries a wire name beside the role | here |

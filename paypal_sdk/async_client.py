@@ -23,7 +23,6 @@ from .core import (
     AsyncTokenSource,
     ClientCredentials,
     ClientCredentialsOrDict,
-    LoggingOptionsOrDict,
     RetryOptionsOrDict,
     client_secret_basic,
     no_auth,
@@ -38,20 +37,16 @@ class AsyncPaypalSdkClient(BasePaypalSdkClient[AsyncRawClient]):
         base_url: str | None = None,
         timeout: float = DEFAULT_TIMEOUT,
         retry_options: int | RetryOptionsOrDict | None = None,
-        logging_options: LoggingOptionsOrDict | None = None,
         custom_async_http_client: AsyncHttpClient | None = None,
         oauth2: ClientCredentialsOrDict | None = None,
         oauth2_token_source: AsyncTokenSource[ClientCredentials] | None = None,
     ) -> None:
-        super().__init__(
-            base_url=base_url, timeout=timeout, retry_options=retry_options, logging_options=logging_options
-        )
+        super().__init__(base_url=base_url, timeout=timeout, retry_options=retry_options)
         self._raw_client = AsyncRawClient(
             http_client=(
                 custom_async_http_client if custom_async_http_client is not None else AsyncHttpx2Client(timeout=timeout)
             ),
             retry_options=self._retry_options,
-            logging_options=self._logging_options,
             global_headers=[
                 param[str]("User-Agent", "PaypalSdkClient/2.29 Python"),
                 param[str]("X-APIMatic-Lang", "Python"),
