@@ -12,6 +12,7 @@ from ..core import (
     json_decoder,
     param,
     raw_error_response,
+    unwrap,
 )
 from ..errors.search_balances_error import SearchBalancesErrorBody, search_balances_error_mapper
 from ..models.balances_response import BalancesResponse
@@ -50,9 +51,11 @@ class TransactionSearch:
             ApiError: The request is not well-formed, is syntactically incorrect, or violates schema. Authorization
                 failed due to insufficient permissions. An internal server error occurred. ``error`` is ``DefaultError |
                 RawError``."""
-        return self._with_raw_response.search_balances(
-            as_of_time=as_of_time, currency_code=currency_code, request_options=request_options
-        ).unwrap()
+        return unwrap(
+            self._with_raw_response.search_balances(
+                as_of_time=as_of_time, currency_code=currency_code, request_options=request_options
+            ),
+        )
 
     def search_transactions(
         self,
@@ -147,23 +150,25 @@ class TransactionSearch:
 
         Raises:
             ApiError: If the API responds with an error status code. ``error`` is ``RawError``."""
-        return self._with_raw_response.search_transactions(
-            start_date,
-            end_date,
-            transaction_id=transaction_id,
-            transaction_type=transaction_type,
-            transaction_status=transaction_status,
-            transaction_amount=transaction_amount,
-            transaction_currency=transaction_currency,
-            payment_instrument_type=payment_instrument_type,
-            store_id=store_id,
-            terminal_id=terminal_id,
-            fields=fields,
-            balance_affecting_records_only=balance_affecting_records_only,
-            page_size=page_size,
-            page=page,
-            request_options=request_options,
-        ).unwrap()
+        return unwrap(
+            self._with_raw_response.search_transactions(
+                start_date,
+                end_date,
+                transaction_id=transaction_id,
+                transaction_type=transaction_type,
+                transaction_status=transaction_status,
+                transaction_amount=transaction_amount,
+                transaction_currency=transaction_currency,
+                payment_instrument_type=payment_instrument_type,
+                store_id=store_id,
+                terminal_id=terminal_id,
+                fields=fields,
+                balance_affecting_records_only=balance_affecting_records_only,
+                page_size=page_size,
+                page=page,
+                request_options=request_options,
+            ),
+        )
 
     @property
     def with_raw_response(self) -> TransactionSearchWithRawResponse:
@@ -201,11 +206,11 @@ class AsyncTransactionSearch:
             ApiError: The request is not well-formed, is syntactically incorrect, or violates schema. Authorization
                 failed due to insufficient permissions. An internal server error occurred. ``error`` is ``DefaultError |
                 RawError``."""
-        return (
+        return unwrap(
             await self._with_raw_response.search_balances(
                 as_of_time=as_of_time, currency_code=currency_code, request_options=request_options
-            )
-        ).unwrap()
+            ),
+        )
 
     async def search_transactions(
         self,
@@ -300,7 +305,7 @@ class AsyncTransactionSearch:
 
         Raises:
             ApiError: If the API responds with an error status code. ``error`` is ``RawError``."""
-        return (
+        return unwrap(
             await self._with_raw_response.search_transactions(
                 start_date,
                 end_date,
@@ -317,8 +322,8 @@ class AsyncTransactionSearch:
                 page_size=page_size,
                 page=page,
                 request_options=request_options,
-            )
-        ).unwrap()
+            ),
+        )
 
     @property
     def with_raw_response(self) -> AsyncTransactionSearchWithRawResponse:
